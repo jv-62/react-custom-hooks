@@ -1,5 +1,4 @@
-
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type JSX } from 'react'
 import './App.css'
 import useDebounce from './hooks/useDebounce'
 import useFetch from './hooks/useFetch'

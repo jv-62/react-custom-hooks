@@ -1,8 +1,12 @@
 
-import { useEffect, useState, type JSX } from 'react'
+import { useEffect, useState } from 'react'
+import './App.css'
 import useDebounce from './hooks/useDebounce'
+import useFetch from './hooks/useFetch'
 
-function App(): JSX.Element {
+type HookId = 'debounce' | 'fetch'
+
+function DebounceDemo() {
   const [query, setQuery] = useState('')
   const debouncedQuery = useDebounce(query, 500)
   const [results, setResults] = useState<string[]>([])
@@ -10,7 +14,8 @@ function App(): JSX.Element {
 
   useEffect(() => {
     if (!debouncedQuery) {
-      setResults(["No results"])
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setResults([])
       setLoading(false)
       return
     }
@@ -37,9 +42,7 @@ function App(): JSX.Element {
   }, [debouncedQuery])
 
   return (
-    <div className="app">
-      <h1>useDebounce demo</h1>
-
+    <div>
       <label htmlFor="search">Search fruits:</label>
       <input
         id="search"
@@ -62,13 +65,93 @@ function App(): JSX.Element {
         {loading ? (
           <div>Loading results...</div>
         ) : (
-          <ul>
+          <ul className="resultsList">
             {results.length === 0 ? (
               <li style={{ color: '#666' }}>No results</li>
             ) : (
               results.map((r) => <li key={r}>{r}</li>)
             )}
           </ul>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function FetchDemo() {
+  const [url, setUrl] = useState<string | null>(null)
+  const { data, loading, error, refetch } = useFetch<any>(url)
+
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: 8 }}>
+        <button onClick={() => setUrl('https://jsonplaceholder.typicode.com/users')}>Load users</button>
+        <button onClick={() => setUrl("https://jsonplaceholder.typicode.com/posts")}>Load posts</button>
+        <button
+          onClick={() => {
+            setUrl(null)
+          }}
+        >
+          Clear
+        </button>
+        <button onClick={() => refetch(url ?? undefined)}>Refetch</button>
+      </div>
+
+      <div style={{ marginTop: 12 }}>
+        {loading && <div>Loading...</div>}
+        {error && <div style={{ color: 'red' }}>Error: {String(error.message)}</div>}
+        {data && (
+          <pre style={{ maxHeight: 300, overflow: 'auto', background: '#fff', padding: 12, borderRadius: 6 }}>
+            {JSON.stringify(data, null, 2)}
+          </pre>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function App(): JSX.Element {
+  const [active, setActive] = useState<HookId | null>('debounce')
+
+  const cards = [
+    { id: 'debounce' as HookId, title: 'useDebounce', desc: 'Debounce a changing value' },
+    { id: 'fetch' as HookId, title: 'useFetch', desc: 'Fetch data with abort + refetch' },
+  ]
+
+  return (
+    <div className="app">
+      <h1>Custom Hooks Gallery</h1>
+
+      <div className="cards">
+        {cards.map((c) => (
+          <div
+            key={c.id}
+            role="button"
+            tabIndex={0}
+            className="card"
+            onClick={() => setActive(c.id)}
+            onKeyDown={(e) => e.key === 'Enter' && setActive(c.id)}
+            style={{ outline: active === c.id ? '2px solid #60a5fa' : undefined }}
+          >
+            <div className="cardTitle">{c.title}</div>
+            <div className="cardDesc">{c.desc}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="panel">
+        {active === 'debounce' && (
+          <div>
+            <h2>useDebounce example</h2>
+            <DebounceDemo />
+          </div>
+        )}
+
+        {active === 'fetch' && (
+          <div>
+            <h2>useFetch example</h2>
+            <FetchDemo />
+          </div>
         )}
       </div>
     </div>

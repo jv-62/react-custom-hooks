@@ -78,7 +78,7 @@ function DebounceDemo() {
 }
 
 function FetchDemo() {
-  const [url, setUrl] = useState<string | null>(null)
+  const [url, setUrl] = useState<string>("")
   const { data, loading, error, refetch } = useFetch<any>(url)
 
   return (
@@ -88,7 +88,7 @@ function FetchDemo() {
         <button onClick={() => setUrl("https://jsonplaceholder.typicode.com/posts")}>Load posts</button>
         <button
           onClick={() => {
-            setUrl(null)
+            setUrl("")
           }}
         >
           Clear

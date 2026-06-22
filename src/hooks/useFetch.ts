@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-export default function useFetch<T = unknown>(url?: string | null, options?: RequestInit) {
+export default function useFetch<T = unknown>(url: string, options?: RequestInit) {
 	const [data, setData] = useState<T | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<Error | null>(null);

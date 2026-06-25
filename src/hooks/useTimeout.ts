@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-export default function useTimeout(callback: React.RefObject<number> | number, delay: number) {
+export default function useTimeout(callback: (() => void) | number, delay: number) {
 	const callbackRef = useRef(callback);
 	const timeoutRef = useRef(callback);
 
@@ -9,12 +9,13 @@ export default function useTimeout(callback: React.RefObject<number> | number, d
 	}, [callback]);
 
 	const set = useCallback(() => {
-		timeoutRef.current = setTimeout(() => callbackRef.current() as React.RefObject<number>, delay);
+		timeoutRef.current = setTimeout(() => callbackRef.current, delay);
 	}, [delay]);
 
 	const clear = useCallback(() => {
-		// eslint-disable-next-line @typescript-eslint/no-unused-expressions
-		timeoutRef.current && clearTimeout(timeoutRef.current as number);
+		if (timeoutRef.current) {
+			clearTimeout(timeoutRef.current as number);
+		}
 	}, []);
 
 	useEffect(() => {

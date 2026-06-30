@@ -4,8 +4,9 @@ import UseDebounceDemo from './components/UseDebounceDemo'
 import UseFetchDemo from './components/UseFetchDemo'
 import UseTimeoutDemo from './components/UseTimeoutDemo'
 import UseToggleDemo from './components/UseToggleDemo'
+import UseUpdateEffectDemo from './components/UseUpdateEffectDemo'
 
-type HookId = 'debounce' | 'fetch' | 'toggle' | 'timeout'
+type HookId = 'debounce' | 'fetch' | 'toggle' | 'timeout' | 'update'
 
 function App(): JSX.Element {
   const [active, setActive] = useState<HookId | null>('debounce')
@@ -15,6 +16,7 @@ function App(): JSX.Element {
     { id: 'fetch' as HookId, title: 'useFetch', desc: 'Fetch data with abort + refetch' },
     { id: 'toggle' as HookId, title: 'useToggle', desc: 'Toggle using the custom hook' },
     { id: 'timeout' as HookId, title: 'useTimeout', desc: 'Timeout using the custom' },
+    { id: 'update' as HookId, title: 'useEffect', desc: 'Custom useEffect hook' },
   ]
 
   return (
@@ -64,6 +66,13 @@ function App(): JSX.Element {
           <div>
             <h2>useTimeout example</h2>
             <UseTimeoutDemo />
+          </div>
+        )}
+        
+        {active === 'update' && (
+          <div>
+            <h2>useEffect example</h2>
+            <UseUpdateEffectDemo />
           </div>
         )}
       </div>

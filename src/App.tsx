@@ -1,13 +1,14 @@
 import { useState, type JSX } from 'react'
 import './App.css'
+import UseArrayDemo from './components/useArrayDemo'
 import UseDebounceDemo from './components/UseDebounceDemo'
 import UseFetchDemo from './components/UseFetchDemo'
+import UsePreviousDemo from './components/UsePreviousDemo'
 import UseTimeoutDemo from './components/UseTimeoutDemo'
 import UseToggleDemo from './components/UseToggleDemo'
 import UseUpdateEffectDemo from './components/UseUpdateEffectDemo'
-import UseArrayDemo from './components/useArrayDemo'
 
-type HookId = 'debounce' | 'fetch' | 'toggle' | 'timeout' | 'update' | 'array'
+type HookId = 'debounce' | 'fetch' | 'toggle' | 'timeout' | 'update' | 'array' | 'previous'
 
 function App(): JSX.Element {
   const [active, setActive] = useState<HookId | null>('debounce')
@@ -19,6 +20,7 @@ function App(): JSX.Element {
     { id: 'timeout' as HookId, title: 'useTimeout', desc: 'Timeout using the custom' },
     { id: 'update' as HookId, title: 'useEffect', desc: 'Custom useEffect hook' },
     { id: 'array' as HookId, title: 'useArray', desc: 'Custom setArray hook' },
+    { id: 'previous' as HookId, title: 'usePrevious', desc: 'Custom useRef hook' },
   ]
 
   return (
@@ -82,6 +84,13 @@ function App(): JSX.Element {
           <div>
             <h2>useEffect example</h2>
             <UseArrayDemo />
+          </div>
+        )}
+        
+        {active === 'previous' && (
+          <div>
+            <h2>useRef example</h2>
+            <UsePreviousDemo />
           </div>
         )}
       </div>

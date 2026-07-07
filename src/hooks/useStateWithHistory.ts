@@ -1,6 +1,15 @@
 import { useCallback, useRef, useState } from 'react';
 
-export default function useStateWithHistory(defaultValue: number, { capacity = 10 } = {}) {
+export interface stateWithHistoryOptions {
+	history: stateWithHistoryOptions[];
+	pointer: number;
+	back: () => void;
+	forward: () => void;
+	go: (index: number) => void;
+	capacity: number;
+}
+
+export default function useStateWithHistory(defaultValue: number, { capacity = 10 } = {} as stateWithHistoryOptions) {
 	const [value, setValue] = useState(defaultValue);
 	const [history, setHistory] = useState([defaultValue]);
 	const [pointer, setPointer] = useState(0);
@@ -8,7 +17,7 @@ export default function useStateWithHistory(defaultValue: number, { capacity = 1
 	const pointerRef = useRef(pointer);
 
 	const set = useCallback(
-		(v: number | ((prev: number) => number)) => {
+		(v: unknown | ((prev: unknown) => unknown)) => {
 			const resolvedValue = typeof v === 'function' ? v(value) : v;
 			if (historyRef.current[pointerRef.current] !== resolvedValue) {
 				let nextHistory = historyRef.current;
@@ -55,15 +64,5 @@ export default function useStateWithHistory(defaultValue: number, { capacity = 1
 		setValue(historyRef.current[index]);
 	}, []);
 
-	return [
-		value,
-		set,
-		{
-			history,
-			pointer,
-			back,
-			forward,
-			go,
-		},
-	];
+	return [value, set, history, pointer, back, forward, go];
 }

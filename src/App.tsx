@@ -3,6 +3,7 @@ import './App.css'
 import UseArrayDemo from './components/UseArrayDemo'
 import UseAsyncDemo from './components/UseAsyncDemo'
 import UseDebounceDemo from './components/UseDebounceDemo'
+import UseDeepCompareEffectDemo from './components/UseDeepCompareEffectDemo'
 import UseFetchDemo from './components/UseFetchDemo'
 import UsePreviousDemo from './components/UsePreviousDemo'
 import UseScriptDemo from './components/UseScriptDemo'
@@ -12,7 +13,7 @@ import UseTimeoutDemo from './components/UseTimeoutDemo'
 import UseToggleDemo from './components/UseToggleDemo'
 import UseUpdateEffectDemo from './components/UseUpdateEffectDemo'
 
-type HookId = 'debounce' | 'fetch' | 'toggle' | 'timeout' | 'update' | 'array' | 'previous' | 'stateWithHistory' | 'storage' | 'async' | 'script'
+type HookId = 'debounce' | 'fetch' | 'toggle' | 'timeout' | 'update' | 'array' | 'previous' | 'stateWithHistory' | 'storage' | 'async' | 'script' | 'deepCompareEffect'
 
 function App(): JSX.Element {
   const [active, setActive] = useState<HookId | null>('debounce')
@@ -29,6 +30,7 @@ function App(): JSX.Element {
     { id: 'storage' as HookId, title: 'useStorage', desc: 'Custom useStorage hook' },
     { id: 'async' as HookId, title: 'useAsync', desc: 'Custom useAsync hook' },
     { id: 'script' as HookId, title: 'useScript', desc: 'Custom useScript hook' },
+    { id: 'deepCompareEffect' as HookId, title: 'useDeepCompareEffect', desc: 'Custom useDeepCompareEffect hook' },
   ]
 
   return (
@@ -127,6 +129,13 @@ function App(): JSX.Element {
           <div>
             <h2>useScript example</h2>
             <UseScriptDemo />
+          </div>
+        )}
+        
+        {active === 'deepCompareEffect' && (
+          <div>
+            <h2>useDeepCompareEffect example</h2>
+            <UseDeepCompareEffectDemo />
           </div>
         )}
       </div>
